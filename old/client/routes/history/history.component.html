@@ -1,0 +1,28 @@
+<div class="route-title">
+  <h3>History</h3>
+</div>
+<div *ngFor="let items of history;">
+  <div class="card">
+    <div class="card-divider">
+      <h5>{{items[0].series.title}}</h5>
+      <h6>{{items[0].episode.title}}</h6>
+    </div>
+    <div class="card-section">
+      <ng-container *ngFor="let item of items; index as index;">
+        <div class="label" [class.success]="index == items.length -1 && !item.qualityCutoffNotMet"
+             title="{{getNameFromEvent(item.eventType)}} - {{item.date | timeAgo}}">
+          <span class="material-icons">{{getIconFromEvent(item.eventType)}}</span>
+          {{item.quality.quality.name}}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!--<div *ngFor="let date of calendar">-->
+<!--<h4>{{date.date | date:'fullDate'}}</h4>-->
+<!--<episode *ngFor="let item of date.episodes" [episode]="item"></episode>-->
+<!--</div>-->
+
+
+<!--<episode *ngFor="let item of wanted?.records" [episode]="item"></episode>-->

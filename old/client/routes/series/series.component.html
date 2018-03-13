@@ -1,0 +1,9 @@
+<div class="route-title">
+  <h3>Series</h3>
+  <input #searchBar type="text" [(ngModel)]="query" placeholder="Find series by name">
+</div>
+<div [class.static]="activeSeries != null" [@fadeInOut]="activeSeries == null ? 'show': 'hide'">
+  <show *ngFor="let show of getFilteredSeries()" [show]="show">
+  </show>
+</div>
+<router-outlet></router-outlet>

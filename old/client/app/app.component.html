@@ -1,0 +1,32 @@
+<div class="row main">
+  <header class="small-12">
+    <nav>
+      <div class="row">
+        <a routerLinkActive="active" [routerLink]="['/home']">
+          <i class="material-icons">local_movies</i>
+          <span>Wanted</span>
+        </a>
+        <a routerLinkActive="active" [routerLink]="['/calendar']">
+          <i class="material-icons">date_range</i>
+          <span>Calendar</span>
+        </a>
+        <a routerLinkActive="active" [routerLink]="['/series']">
+          <i class="material-icons">movie_filter</i>
+          <span>Series</span>
+        </a>
+        <a routerLinkActive="active" [routerLink]="['/history']">
+          <i class="material-icons">history</i>
+          <span>History</span>
+        </a>
+        <a routerLinkActive="active" [routerLink]="['/config']">
+          <i class="material-icons">settings</i>
+          <span>Config</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="small-12">
+    <router-outlet></router-outlet>
+  </main>
+</div>

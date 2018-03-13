@@ -1,0 +1,42 @@
+<div class="show" *ngIf="show">
+  <div class="banner">
+    <img [src]="getBanner()" style="width: 100%; height: auto;">
+  </div>
+  <div class="row">
+    <div class="small-4 show-poster">
+      <img [src]="getPoster()"/>
+    </div>
+    <div class="column small-8 show-info">
+      <h2><span id="title">{{show.title}}</span></h2>
+      <h6 id="start-year"><i class="fi-social-picasa"></i>Started {{show.firstAired | date}}</h6>
+      <h6 id="show-status"><i class="material-icons">play_arrow</i>{{show.status}}</h6>
+      <h6>
+        <i class="material-icons">collections_bookmark</i><span id="seasons">Seasons {{show.seasonCount}}</span>
+        <span id="episodes" class="{{getEpisodeLabelClass()}}">{{show.episodeCount}}/{{show.episodeFileCount}}</span>
+      </h6>
+      <h6>
+        <i class="material-icons">access_time</i>
+        <span id="air-time">{{show.airTime}}</span> on
+        <span id="network" class="network">{{show.network}}</span>
+      </h6>
+    </div>
+  </div>
+  <div class="row">
+    <p id="summary" class="summary">{{show.overview}}</p>
+  </div>
+  <hr>
+
+  <!--a list of episodes will be shown here-->
+  <h3>Seasons</h3>
+  <ul class="season-select menu expanded">
+    <li *ngFor="let season of show.seasons" [class.active]="activeSeason == season.seasonNumber ">
+      <a (click)="activeSeason = season.seasonNumber">
+        <h3>{{season.seasonNumber}}</h3>
+      </a>
+    </li>
+  </ul>
+  <p *ngIf="!episodes || !episodes.length">Loading...</p>
+  <episode *ngFor="let item of getEpisodesForSeason(activeSeason)" [episode]="item"></episode>
+
+
+</div>

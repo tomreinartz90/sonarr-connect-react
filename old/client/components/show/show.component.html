@@ -1,0 +1,16 @@
+<div class="serie-general row is-collapse-child" *ngIf="show" [routerLink]="['/series', show.id]" (click)="selectShow(show)">
+
+  <div class="small-8 columns">
+    <h6 id="title" class="series-title">{{show.title}}</h6>
+    <span id="network" class="label secondary hide">{{show.network}}</span>
+    <span id="episodesCount" class="{{getEpisodeLabelClass()}}">{{show.episodeCount}}/{{show.episodeFileCount}}</span>
+    <span id="status" class="label success">{{show.status}}</span>
+  </div>
+  <div class="small-2 columns monitored-indicator">
+    <i class="material-icons" *ngIf="show.monitored">bookmark</i>
+    <i class="material-icons" *ngIf="!show.monitored">bookmark_border</i>
+  </div>
+  <div class="small-2">
+    <img id="poster" [src]="getPoster()">
+  </div>
+</div>

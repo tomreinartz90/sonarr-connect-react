@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es2015",
+    "target": "es2015",
+    "declaration": false,
+    "removeComments": false,
+    "noLib": false,
+    "skipLibCheck": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": false,
+    "pretty": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [
+      "jasmine"
+    ],
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../node_modules"
+    ]
+  },
+  "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictInjectionParameters": true
+  }
+}

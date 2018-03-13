@@ -1,0 +1,8 @@
+<div class="route-title">
+  <h3>Upcoming Episodes</h3>
+</div>
+
+<div *ngFor="let date of calendar">
+  <h4>{{date.date | date:'fullDate'}}</h4>
+  <episode *ngFor="let item of date.episodes" [episode]="item"></episode>
+</div>

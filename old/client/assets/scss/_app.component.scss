@@ -1,0 +1,49 @@
+// styles applied on :host are applied on the current component, "app" in this case
+
+my-app {
+  .main {
+    margin-top: 3rem;
+  }
+}
+
+header {
+  background-color: $dark-gray;
+  position: fixed;
+  top: 0;
+
+  left: 0;
+  width: 100%;
+  z-index: 120;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+
+  .row a {
+    padding: .3rem .5rem;
+    color: $white;
+    text-align: center;
+    display: block;
+    width: 25%;
+    > *,
+    & {
+      transition: all 200ms ease-in-out;
+    }
+    span {
+      display: block;
+      font-size: .7rem;
+      line-height: 1;
+    }
+    i {
+      font-size: 1.2rem;
+      line-height: 1.5rem;
+    }
+    &.active,
+    &:hover {
+      background-color: $sonarr-blue;
+    }
+
+  }
+}
+
+footer {
+  text-align: center;
+  font-size: 0.8em;
+}

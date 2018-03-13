@@ -1,0 +1,20 @@
+<div class="episode">
+  <div class="row">
+    <div class="small-10 columns episode-info">
+      <a class="series-title" *ngIf="episode?.series?.title" [routerLink]="['/series', episode.seriesId]">{{episode?.series?.title}}</a>
+      <div class="episode-title">
+        <span class="episodenum">{{getEpisodeNumber()}}</span>
+        <span class="episodename">{{episode?.title}}</span>
+      </div>
+      <div class="episode-info">
+        <span *ngIf="!episode.hasFile" class="label secondary">Missing</span>
+        <span *ngIf="episode.hasFile" class="label success">Downloaded</span>
+        <span class="date">{{isAirdateBeforeNow() ? 'Aired' : 'Airs'}} {{episode.airDateUtc | timeAgo}}</span>
+      </div>
+    </div>
+    <div class="small-2 columns monitored-indicator" (click)="toggleEpisodeMonitored()">
+      <i class="material-icons" *ngIf="episode.monitored">bookmark</i>
+      <i class="material-icons" *ngIf="!episode.monitored">bookmark_border</i>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "Sonarr Connect (beta)",
+  "description": "Show upcoming/missing episodes, your series and history from Sonarr",
+  "version": "2.0.0",
+  "browser_action": {
+    "default_icon": "assets/icons/72.png",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "page": "index.html?background=true",
+    "persistent": true
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "icons": {
+    "16": "assets/icons/16.png",
+    "48": "assets/icons/48.png",
+    "128": "assets/icons/128.png"
+  },
+  "permissions": [
+    "storage",
+    "alarms"
+  ]
+}

@@ -1,0 +1,350 @@
+// styles in src/style directory are applied to the whole page
+@import "settings";
+
+@include foundation-everything(true);
+@import "./app.component";
+
+::-webkit-scrollbar {
+  display: block;
+  background-color: #eee;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  height: 1rem;
+}
+
+body, html {
+  width: 357px;
+  height: auto;
+  overflow: hidden;
+}
+
+main {
+  //margin-top: 4rem;
+}
+
+body {
+  background-color: $medium-gray;
+  color: $dark-gray;
+  overflow: hidden;
+  width: 600px;
+  height: 800px;
+
+}
+
+main > * {
+  background-color: $medium-gray;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  max-height: calc(100vh - 2rem);
+  &:not(:empty) {
+    padding: .5rem;
+  }
+  &:nth-child(2) {
+    z-index: 100;
+    //position: absolute;
+    left: 0;
+    right: 0;
+    height: 100%;
+
+  }
+  &:nth-child(3) {
+    z-index: 80;
+    //position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+}
+
+.static {
+  //position: absolute;
+  //top: 0;
+  //left: 0;
+  overflow: hidden;
+  //width: 100%;
+  //height: 100%;
+  //max-height: 100vh;
+}
+
+.episode {
+  padding: 1rem 0;
+  border-bottom: .125rem solid $sonarr-blue;
+
+  .monitored-indicator {
+    padding: 0;
+    cursor: pointer;
+    .material-icons {
+      font-size: 2rem;
+      color: $dark-gray;
+      line-height: 1;
+    }
+  }
+}
+
+show {
+  @include card-container();
+  display: block;
+  margin: .5rem 0;
+  //background-color: $medium-gray;
+  //color: $dark-gray;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($white, 20%)
+  }
+
+  .small-8 {
+    padding: 0 .5rem 0 1rem;
+  }
+
+  .series-title {
+    font-size: 1.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 1.6rem;
+    white-space: nowrap;
+    display: block;
+    font-weight: bold;
+    //color: $white;
+    margin-top: .6rem;
+  }
+
+  .serie-general img {
+    min-height: 5rem;
+    max-height: 7rem;
+    float: right;
+    background-color: $dark-gray;
+    object-fit: contain;
+
+  }
+
+  .monitored-indicator {
+    padding: 1rem 0;
+    text-align: center;
+    .material-icons {
+      font-size: 2rem;
+      //color: $white;
+      line-height: 1;
+    }
+  }
+}
+
+series-details {
+  display: block;
+  background-color: $black;
+  position: absolute !important;
+  top: 0;
+  overflow: auto;
+  color: $white;
+  .banner {
+    //position: absolute;
+    margin-bottom: -2rem;
+    margin-top: -1rem;
+  }
+
+  .network {
+    font-weight: bold;
+  }
+
+  .show-poster {
+    padding: 0 .5rem 1rem .625rem;
+    img {
+      box-shadow: 3px 3px 3px $dark-gray;
+    }
+  }
+
+  .show-info {
+    h2 {
+      color: $white;
+      text-shadow: 3px 3px 6px $dark-gray;
+      font-weight: bold;
+    }
+    .label {
+      margin: 0 .5rem;
+    }
+  }
+
+  .summary {
+    margin-top: 1rem;
+    border-top: thin solid $medium-gray;
+    padding: 1rem 0.625rem 0 0.625rem;
+  }
+
+  .season-select {
+    background-color: $dark-gray;
+    border: thin solid $light-gray;
+    margin-bottom: .5rem;
+    li {
+      &:hover {
+        background-color: $medium-gray;
+      }
+      max-width: 3rem;
+      a {
+        padding: .25rem;
+        h3 {
+          font-size: .8rem;
+          text-align: center;
+          width: 100%;
+          line-height: 2rem;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.2rem; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  //margin: 0 .5rem;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+.accordion-title {
+  padding: .65rem 1rem;
+  h3 {
+    margin: 0;
+  }
+
+  .label {
+    font-size: 0.9rem;
+    line-height: 1;
+    float: right;
+    margin-right: 1.2rem;
+  }
+}
+
+.accordion-content {
+  padding-top: 0;
+}
+
+.episode {
+  @include card-container();
+  padding-left: .5rem;
+  margin: .2rem 0;
+  .series-title {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2rem;
+    white-space: nowrap;
+    display: block;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+}
+
+.label {
+  border-radius: .25rem;
+  font-weight: bold;
+  &.success {
+    background-color: $success-color;
+    color: $white;
+  }
+}
+
+.accordion {
+  margin: 0;
+}
+
+series series-details {
+  left: 0;
+  right: 0;
+  top: 3rem;
+  bottom: 0;
+  max-height: 100vh;
+  margin: 0 -.5rem;
+  //overflow-y: auto;
+  //overflow-x: hidden;
+  padding: 1rem;
+  width: auto !important;
+}
+
+.route-title {
+  background-color: darken($sonarr-blue, 10%);
+  color: $white;
+  padding: 3rem 1rem 1rem;
+  margin: -.5rem;
+  margin-bottom: 1rem;
+  h3 {
+    font-size: 1.4rem;
+  }
+}
+
+my-calendar {
+  > div > h4 {
+    background: lighten($medium-gray, 10%);
+    //background: linear-gradient(to bottom, darken($medium-gray, 10%) 0%, $medium-gray);
+    color: $sonarr-blue;
+    font-size: $h4-font-size;
+    font-weight: normal;
+    margin: 1.5rem -.5rem -1.5rem;
+    padding: 2rem 1rem;
+    border-bottom: thin solid $sonarr-blue;
+  }
+}
+
+my-config {
+  .card {
+    padding: 2rem 1rem;
+  }
+  .test-status {
+    margin: .5rem 1rem;
+  }
+}
+
+my-history {
+  padding-bottom: 10rem;
+  .card .label {
+    margin-right: .5rem;
+    margin-bottom: .5rem;
+    &:not(.success) {
+      background-color: $medium-gray;
+    }
+
+    .material-icons {
+      width: 1rem;
+      font-size: 1rem;
+    }
+
+    &:not(:last-child):after {
+      content: "arrow_forward";
+      font-family: 'Material Icons';
+      margin-right: -1.2rem;
+      margin-left: 2rem;
+      color: $dark-gray;
+
+    }
+  }
+}

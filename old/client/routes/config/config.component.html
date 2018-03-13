@@ -1,0 +1,49 @@
+<div class="route-title">
+  <h3>Sonarr Connect Configuration</h3>
+</div>
+
+<div class="card column">
+  <div class="row" *ngIf="config">
+    <div class="column small-12">
+      <h6>Url</h6>
+      <div class="row is-collapse-child">
+        <select class="small-3" [(ngModel)]="config.protocol">
+          <option value="https://">https://</option>
+          <option value="http://">http://</option>
+        </select>
+        <input class="small-9" [(ngModel)]="config.url" type="text">
+      </div>
+    </div>
+    <div class="column small-12">
+      <h6>API key</h6>
+      <input type="text" [(ngModel)]="config.apiKey">
+    </div>
+    <div class="column small-12">
+      <h6>Number of days to show in calendar:</h6>
+      <input type="number" min="0" [(ngModel)]="config.daysInCalendar">
+    </div>
+    <div class="column small-12">
+      <h6>Wanted Items:</h6>
+      <input type="number" min="0" [(ngModel)]="config.wantedItems">
+    </div>
+    <div class="column small-12">
+      <h6>History Items:</h6>
+      <input type="number" min="0" [(ngModel)]="config.historyItems">
+    </div>
+    <div class="column small-12">
+      <h6>Background interval: time in minutes</h6>
+      <input type="number" min="0" [(ngModel)]="config.backgroundInterval">
+    </div>
+
+    <div class="test-status" *ngIf="testStatus">
+      <span *ngIf="testStatus.success" class="label success">Connected</span>
+      <span *ngIf="testStatus.error" class="label warning">Could not Connect</span>
+      to Sonarr with version {{testStatus?.info?.version}}
+    </div>
+
+    <div class="column small-12">
+      <div class="button success float-right" (click)="setConfig()">Save</div>
+      <div class="button float-right" (click)="testConfig()">Test</div>
+    </div>
+  </div>
+</div>
