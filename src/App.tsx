@@ -6,6 +6,8 @@ import { DataManager } from './shared/data.manager.service';
 import { WelcomeRoute } from "./components/routes/Welcome.route";
 import { SeriesRoute } from "./components/routes/Series.route";
 import { ConfigRoute } from "./components/routes/Config.route";
+import { WantedRoute } from "./components/routes/Wanted.route";
+import { CalendarRoute } from "./components/routes/Calendar.route";
 
 const logo = require( './logo.svg' );
 
@@ -29,6 +31,12 @@ export class App extends DataManagerComponent<string, {}> {
 
       case 'config':
         return <ConfigRoute/>;
+
+      case 'wanted':
+        return <WantedRoute/>;
+
+      case 'calendar':
+        return <CalendarRoute/>;
 
       default:
         return <WelcomeRoute/>;

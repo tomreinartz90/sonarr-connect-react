@@ -37,9 +37,10 @@ export class SonarrService {
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'sort_by', 'sortTitle' );
     params.set( 'order', 'asc' );
-    return this.get<Array<SonarrSeriesModel>>( '/series', params ).map( data => {
-      data.sort( this.util.seriesComparator );
-    } )
+    return this.get<Array<SonarrSeriesModel>>( '/series', params )
+        .map( data => {
+          return data.sort( this.util.seriesComparator );
+        } )
         .do( (resp => {
           this.storage.setItem( 'series', resp );
         }) ).startWith( this.storage.getItem( 'series' ) );
