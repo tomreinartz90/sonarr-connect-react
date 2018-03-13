@@ -9,8 +9,6 @@ import { ConfigRoute } from "./components/routes/Config.route";
 import { WantedRoute } from "./components/routes/Wanted.route";
 import { CalendarRoute } from "./components/routes/Calendar.route";
 
-const logo = require( './logo.svg' );
-
 export class App extends DataManagerComponent<string, {}> {
   navigation: DataManager<string>;
 
@@ -47,10 +45,6 @@ export class App extends DataManagerComponent<string, {}> {
     if ( this.state.data != 'welcome' && this.state.data != 'config' ) {
       return (
           <div>
-            <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo"/>
-              <h1 className="App-title">Welcome to React</h1>
-            </header>
             <Menu/>
           </div>
       );
