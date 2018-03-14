@@ -1,3 +1,5 @@
+import { SonarrSeriesModel } from "./sonarr-series.model";
+
 /**
  * Created by taren on 3-2-2017.
  */
@@ -16,6 +18,8 @@ export class SonarrSeriesEpisode {
   id: number;
   episodeFile: Object;
   absoluteEpisodeNumber?: number;
+
+  series: SonarrSeriesModel = new SonarrSeriesModel( {} );
 
   constructor( obj: Object ) {
     Object.assign( this, obj );
