@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './App.css';
+import './app.css';
 import { DataManagerComponent } from './components/core/Data.manager.component';
 import { Menu } from './components/menu/Menu.component';
 import { DataManager } from './shared/data.manager.service';
@@ -56,7 +56,9 @@ export class App extends DataManagerComponent<string, {}> {
     return (
         <div className="App">
           {this.getHeader()}
-          {this.getActiveRoute()}
+          <main>
+            {this.getActiveRoute()}
+          </main>
         </div>
     );
   }
