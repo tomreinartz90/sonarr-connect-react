@@ -21,6 +21,31 @@ export class SonarrService {
         }) ).startWith( this.storage.getItem( 'calendar' ) );
   }
 
+  getGroupedCalendar(): Observable<Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }>> {
+    return this.getCalendar().map( data => {
+      if ( data ) {
+        let calendarDates: Array<string>                                                 = [];
+        let groupedEpisodes: Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }> = [];
+        //create list of dates where episodes are aired
+        data.forEach( episode => {
+          if ( calendarDates.indexOf( episode.airDate ) == -1 ) {
+            calendarDates.push( episode.airDate )
+          }
+        } );
+
+        calendarDates.forEach( date => {
+          groupedEpisodes.push( {
+            date: new Date( date ),
+            episodes: data.filter( episode => episode.airDate == date )
+          } );
+        } );
+
+        return groupedEpisodes;
+      }
+      return [];
+    } );
+  }
+
   getWanted( page: number = 0 ): Observable<{ pageSize: number, page: number, records: Array<SonarrSeriesEpisode>, totalRecords: number }> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
