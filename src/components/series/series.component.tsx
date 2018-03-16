@@ -18,7 +18,7 @@ export class SeriesComponent extends DataManagerComponent<Array<SonarrSeriesMode
   }
 
   render() {
-    const shows: Array<SonarrSeriesModel> = this.state ? this.state.data : [];
+    const shows: Array<SonarrSeriesModel> = this.state ? (this.state.data || []) : [];
     return (
         <div>
           {shows.map( show => {

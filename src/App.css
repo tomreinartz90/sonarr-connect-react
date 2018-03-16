@@ -4095,7 +4095,8 @@ body {
   background-color: #cacaca;
   color: #1a1a1a;
   overflow-x: hidden;
-  max-width: 600px;
+  max-width: 400px;
+  width: 400px;
   height: 100%; }
 
 main > * {
