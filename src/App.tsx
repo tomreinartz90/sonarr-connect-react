@@ -8,6 +8,7 @@ import { SeriesRoute } from "./components/routes/Series.route";
 import { ConfigRoute } from "./components/routes/Config.route";
 import { WantedRoute } from "./components/routes/Wanted.route";
 import { CalendarRoute } from "./components/routes/Calendar.route";
+import { ChromeService } from "./shared/chrome.service";
 
 export class App extends DataManagerComponent<string, {}> {
   navigation: DataManager<string>;
@@ -16,6 +17,8 @@ export class App extends DataManagerComponent<string, {}> {
     super( props, context );
     this.data       = 'welcome';
     this.navigation = new DataManager<string>( 'navigation' );
+    const chrome    = new ChromeService();
+    chrome.getBadgeCountFromSonarr();
   }
 
   getData() {

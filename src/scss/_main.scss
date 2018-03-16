@@ -5,18 +5,6 @@
 @include foundation-everything(true);
 @import "./app.component";
 
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
-  src: local('Material Icons'),
-  local('MaterialIcons-Regular'),
-  url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
-  url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
-  url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
-}
-
 ::-webkit-scrollbar {
   display: block;
   background-color: #eee;
@@ -36,6 +24,8 @@
 
 main {
   margin-top: 3rem;
+  display: inline-block;
+  width: 100%;
 }
 
 body {
@@ -45,7 +35,13 @@ body {
   max-width: 400px;
   width: 400px;
   height: 100%;
+}
 
+.route-header h4 {
+  font-size: 1.725rem;
+  margin: 0 0 1rem;
+  color: $sonarr-blue;
+  font-weight: normal;
 }
 
 main > * {
@@ -54,7 +50,7 @@ main > * {
   overflow-y: auto;
   overflow-x: hidden;
 
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100vh - 3rem);
   &:not(:empty) {
     padding: .5rem;
   }
