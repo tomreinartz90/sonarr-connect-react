@@ -1,20 +1,49 @@
 import * as React from 'react';
 import { DataManager } from '../../shared/data.manager.service';
 
-export class Menu extends React.Component {
+export class Menu extends React.Component<{ activeRoute: string }> {
   navigation: DataManager<string> = new DataManager<string>( 'navigation' );
 
   setMenu( menu: string ) {
     this.navigation.setData( menu );
   }
 
+  getIsActiveRoute( route: string ) {
+    if ( route && this.props && this.props.activeRoute == route ) {
+      return 'active';
+    }
+    return '';
+  }
+
   render() {
     return (
-        <ul>
-          <li onClick={() => this.setMenu( 'series' )}>Series</li>
-          <li onClick={() => this.setMenu( 'calendar' )}>Calendar</li>
-          <li onClick={() => this.setMenu( 'wanted' )}>Wanted</li>
-          <li onClick={() => this.setMenu( 'config' )}>Settings</li>
-        </ul>);
+        <header className="small-12">
+          <nav>
+            <div className="row">
+              <a className={this.getIsActiveRoute( 'wanted' )} onClick={() => this.setMenu( 'wanted' )}>
+                <i className="material-icons">local_movies</i>
+                <span>Wanted</span>
+              </a>
+              <a className={this.getIsActiveRoute( 'calendar' )} onClick={() => this.setMenu( 'calendar' )}>
+                <i className="material-icons">date_range</i>
+                <span>Calendar</span>
+              </a>
+              <a className={this.getIsActiveRoute( 'series' )} onClick={() => this.setMenu( 'series' )}>
+                <i className="material-icons">movie_filter</i>
+                <span>Series</span>
+              </a>
+              <a className={this.getIsActiveRoute( 'history' )} onClick={() => this.setMenu( 'history' )}>
+                <i className="material-icons">history</i>
+                <span>History</span>
+              </a>
+              <a className={this.getIsActiveRoute( 'config' )} onClick={() => this.setMenu( 'config' )}>
+                <i className="material-icons">settings</i>
+                <span>Config</span>
+              </a>
+            </div>
+          </nav>
+        </header>
+
+    );
   }
 }

@@ -1,8 +1,21 @@
 // styles in src/style directory are applied to the whole page
+@import "../../node_modules/foundation-sites/scss/foundation.scss";
 @import "settings";
 
 @include foundation-everything(true);
 @import "./app.component";
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+  url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+  url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
 
 ::-webkit-scrollbar {
   display: block;
@@ -21,22 +34,16 @@
   height: 1rem;
 }
 
-body, html {
-  width: 357px;
-  height: auto;
-  overflow: hidden;
-}
-
 main {
-  //margin-top: 4rem;
+  margin-top: 3rem;
 }
 
 body {
   background-color: $medium-gray;
   color: $dark-gray;
-  overflow: hidden;
-  width: 600px;
-  height: 800px;
+  overflow-x: hidden;
+  max-width: 600px;
+  height: 100%;
 
 }
 
@@ -92,9 +99,9 @@ main > * {
   }
 }
 
-show {
+.serie-general {
   @include card-container();
-  display: block;
+  flex-direction: row;
   margin: .5rem 0;
   //background-color: $medium-gray;
   //color: $dark-gray;
@@ -252,6 +259,11 @@ series-details {
   @include card-container();
   padding-left: .5rem;
   margin: .2rem 0;
+
+  > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
   .series-title {
     font-weight: bold;
     overflow: hidden;

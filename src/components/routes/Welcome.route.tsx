@@ -10,7 +10,7 @@ export class WelcomeRoute extends DataManagerComponent<any, {}> {
 
   getData() {
     return this.sonarr.getSystemStatus().do( ( data ) => {
-      this.navigation.setData( 'series' );
+      this.navigation.setData( 'calendar' );
     }, ( err ) => {
       this.navigation.setData( 'config' );
     } );

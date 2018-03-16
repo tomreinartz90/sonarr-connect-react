@@ -16,7 +16,7 @@ export class CalendarComponent extends DataManagerComponent<Array<{ date: Date, 
     const calendar: Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }> = this.state ? this.state.data : [];
     return calendar.map( date => (
             <div key={date.date.getTime()}>
-              <h3> {date.date.toISOString()} </h3>
+              <h3> {date.date.toLocaleDateString()} </h3>
               <div>{date.episodes.map( episode => <EpisodeComponent episode={episode} key={episode.id}/> )}</div>
             </div>
         )

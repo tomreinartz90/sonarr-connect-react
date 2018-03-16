@@ -1,15 +1,29 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
+  "name": "Sonarr Connect (beta)",
+  "short_name": "Sonarr Connect",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "manifest_version": 2,
+  "description": "Show upcoming/missing episodes, your series and history from Sonarr",
+  "version": "2.0.0",
+  "browser_action": {
+    "default_icon": "assets/icons/72.png",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "page": "index.html?background=true",
+    "persistent": true
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "icons": {
+    "16": "assets/icons/16.png",
+    "48": "assets/icons/48.png",
+    "128": "assets/icons/128.png"
+  },
+  "permissions": [
+    "storage",
+    "alarms"
+  ]
 }

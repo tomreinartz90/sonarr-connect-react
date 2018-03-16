@@ -45,7 +45,7 @@ export class App extends DataManagerComponent<string, {}> {
     if ( this.state.data != 'welcome' && this.state.data != 'config' ) {
       return (
           <div>
-            <Menu/>
+            <Menu activeRoute={this.state.data}/>
           </div>
       );
     }

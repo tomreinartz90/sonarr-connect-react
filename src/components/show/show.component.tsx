@@ -31,8 +31,7 @@ export class ShowComponent extends React.Component<{ show: SonarrSeriesModel, en
             <span id="status" className="label success">{show.status}</span>
           </div>
           <div className="small-2 columns monitored-indicator">
-            <i className="material-icons">bookmark</i>
-            <i className="material-icons">bookmark_border</i>
+            <i className="material-icons">{show.monitored ? 'bookmark' : 'bookmark_border'}</i>
           </div>
           <div className="small-2">
             <img id="poster" src={this.getPoster( show )}/>
