@@ -8,7 +8,6 @@ export class HistoryComponent extends DataManagerComponent<Array<SonarrHistoryIt
 
   sonarr: SonarrService = new SonarrService();
 
-  // short copy
   private events: any = {
     "downloadFolderImported": 'Imported',
     "grabbed": 'Grabbed',
@@ -19,7 +18,7 @@ export class HistoryComponent extends DataManagerComponent<Array<SonarrHistoryIt
     "toBeAired": '',
     "downloadFailed": 'Failed'
   };
-  // add class depening on current status
+
   private classes: any = {
     "downloadFolderImported": 'label success',
     "downloaded": 'label success',
@@ -48,8 +47,10 @@ export class HistoryComponent extends DataManagerComponent<Array<SonarrHistoryIt
   render() {
     const episodes: Array<SonarrHistoryItemModel> = this.state ? this.state.data : [];
     return episodes.map( episode => (
-        <div>
-          <EpisodeComponent episode={episode.episode} episodeInfo={this.getEpisodeInfo( episode )}/>
+        <div key={episode.id}>
+          <EpisodeComponent episode={episode.episode} episodeInfo={this.getEpisodeInfo( episode )}>
+            {this.getEpisodeInfo( episode )}
+          </EpisodeComponent>
         </div>
       )
     );

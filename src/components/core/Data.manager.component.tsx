@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from "rxjs/Subscription";
 
-export abstract class DataManagerComponent<D, P> extends React.Component<P, { data: D }> {
+export abstract class DataManagerComponent<D, P = {}, T = {}> extends React.Component<P, { data: D } & T> {
   protected data$: Subscription;
   private mounted: boolean = false;
 

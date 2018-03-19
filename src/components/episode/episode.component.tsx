@@ -23,7 +23,7 @@ export class EpisodeComponent extends React.Component<{ episode: SonarrSeriesEpi
   }
 
   getInfo( episode: SonarrSeriesEpisode ) {
-    if ( !this.props.episodeInfo ) {
+    if ( !this.props.children ) {
       return (
         <div className="episode-info">
           {!episode.hasFile ? <span className="label secondary">Missing</span> :
@@ -33,7 +33,7 @@ export class EpisodeComponent extends React.Component<{ episode: SonarrSeriesEpi
         </div>
       );
     }
-    return this.props.episodeInfo;
+    return this.props.children;
   }
 
   render() {

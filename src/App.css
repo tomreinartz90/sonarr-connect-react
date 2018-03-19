@@ -4043,7 +4043,8 @@ header {
     padding: .3rem .5rem;
     color: #fefefe;
     text-align: center;
-    width: 25%; }
+    width: 25%;
+    text-transform: capitalize; }
     header .row a > *, header .row a {
       transition: all 200ms ease-in-out; }
     header .row a span {

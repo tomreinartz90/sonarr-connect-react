@@ -83,7 +83,7 @@ export class ConfigRoute extends DataManagerComponent<SonarrConfig, any> {
     </div>*/}
 
                   <div className="column small-12">
-                    <button className="button success float-right" onClick={this.setConfig}>Save</button>
+                    <button className="button float-right" onClick={this.setConfig}>Save</button>
                   </div>
                 </div>
               </div>

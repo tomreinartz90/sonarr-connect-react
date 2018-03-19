@@ -77,7 +77,7 @@ export class SonarrService {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'seriesId', String( seriesId ) );
     // http://192.168.1.100:8989/api/episode?seriesId=10&apikey=aa9838e7d4444602849061ca1a6bffa7
-    return this.get<Array<SonarrSeriesEpisode>>( '/episode', params );
+    return this.get<Array<SonarrSeriesEpisode>>( '/episode', params ).map( episodes => episodes.map( episode => new SonarrSeriesEpisode( episode ) ) );
   }
 
   getHistory( page: number = 0 ): Observable<Array<SonarrHistoryItemModel>> {

@@ -22,6 +22,7 @@ header {
     color: $white;
     text-align: center;
     width: 25%;
+    text-transform: capitalize;
     > *,
     & {
       transition: all 200ms ease-in-out;
