@@ -5,7 +5,7 @@ import { WantedComponent } from "../wanted/wanted.component";
 export class WantedRoute extends React.Component {
   render() {
     return (
-        <div>
+        <div className="wanted">
           <RouteHeader name="Wanted"/>
           <WantedComponent/>
         </div>

@@ -10,13 +10,13 @@ import { WantedRoute } from "./components/routes/Wanted.route";
 import { CalendarRoute } from "./components/routes/Calendar.route";
 import { ChromeService } from "./shared/chrome.service";
 
-export class App extends DataManagerComponent<string, {}> {
-  navigation: DataManager<string>;
+export class App extends DataManagerComponent<any[], {}> {
+  navigation: DataManager<any[]>;
 
   constructor( props: {}, context?: {} ) {
     super( props, context );
-    this.data       = 'welcome';
-    this.navigation = new DataManager<string>( 'navigation' );
+    this.data       = ['welcome'];
+    this.navigation = new DataManager<any[]>( 'navigation' );
     const chrome    = new ChromeService();
     chrome.getBadgeCountFromSonarr();
   }
@@ -26,7 +26,7 @@ export class App extends DataManagerComponent<string, {}> {
   }
 
   getActiveRoute() {
-    switch ( this.state.data ) {
+    switch ( this.state.data[0] ) {
       case 'series':
         return <SeriesRoute/>;
 
@@ -45,10 +45,10 @@ export class App extends DataManagerComponent<string, {}> {
   }
 
   getHeader() {
-    if ( this.state.data != 'welcome' && this.state.data != 'config' ) {
+    if ( this.state.data[0] != 'welcome' && this.state.data[0] != 'config' ) {
       return (
           <div>
-            <Menu activeRoute={this.state.data}/>
+            <Menu activeRoute={this.state.data[0]}/>
           </div>
       );
     }

@@ -5,7 +5,7 @@ import { CalendarComponent } from "../calendar/Calendar.component";
 export class CalendarRoute extends React.Component {
   render() {
     return (
-        <div>
+        <div className="calendar">
           <RouteHeader name="Calendar"/>
           <CalendarComponent/>
         </div>

@@ -40,10 +40,10 @@ export class ConfigRoute extends DataManagerComponent<SonarrConfig, any> {
   render() {
     const config = this.state ? this.state.data : null;
     return (
-        <div>
+        <div className="config">
           <RouteHeader name="config"/>
           {!config ? null :
-              <div className="card column">
+              <div className="card config column">
                 <div className="row">
                   <div className="column small-12">
                     <h6>Url</h6>
@@ -84,7 +84,6 @@ export class ConfigRoute extends DataManagerComponent<SonarrConfig, any> {
 
                   <div className="column small-12">
                     <button className="button success float-right" onClick={this.setConfig}>Save</button>
-                    <button className="button float-right" onClick={this.testConfig}>Test</button>
                   </div>
                 </div>
               </div>

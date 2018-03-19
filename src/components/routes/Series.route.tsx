@@ -5,9 +5,8 @@ import { SeriesComponent } from "../series/series.component";
 export class SeriesRoute extends React.Component {
   render() {
     return (
-        <div>
+        <div className="series">
           <RouteHeader name="Series"/>
-          my series
           <SeriesComponent/>
         </div>
     );

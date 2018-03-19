@@ -5,46 +5,45 @@ import { DataManager } from "../../shared/data.manager.service";
 
 export class WelcomeRoute extends DataManagerComponent<any, {}> {
   private sonarr: SonarrService = new SonarrService();
-  private navigation            = new DataManager<string>( 'navigation' );
+  private navigation = new DataManager<any[]>( 'navigation' );
 
 
   getData() {
     return this.sonarr.getSystemStatus().do( ( data ) => {
-      this.navigation.setData( 'calendar' );
-    }, ( err ) => {
-      this.navigation.setData( 'config' );
+      this.navigation.setData( ['calendar'] );
+    }, (  ) => {
+      this.navigation.setData( ['config'] );
     } );
   }
 
   getConnected() {
-    return (
-        <div>
-          Welcome,
-          Connected to Sonarr {this.state ? this.state.data.version : null}
-        </div>
-    )
+    return "Connected to Sonarr " + (this.state ? this.state.data.version : null);
   }
 
   getConnecting() {
-    return (<div>Connecting to Sonarr</div>)
+    return "Connecting to Sonarr";
   }
 
   getError() {
-    return (
-        <div>
-          Welcome,
-          Could not connect to Sonarr
-        </div>
-    )
+    return "Could not connect to Sonarr";
   }
 
-  render() {
+  getWelcome() {
     if ( this.state && this.data ) {
       return this.getConnected();
     } else if ( this.state && !this.data ) {
       return this.getError();
     } else {
-      return this.getConnecting()
+      return this.getConnecting();
     }
+
+  }
+
+  render() {
+    return (
+      <div className="welcome">
+        <h2>{this.getWelcome()}</h2>
+      </div>
+    );
   }
 }

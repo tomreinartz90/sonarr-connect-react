@@ -7,7 +7,7 @@ export class StorageService {
   storage: Storage = localStorage;
 
   constructor() {
-    if ( chrome && chrome.runtime ) {
+    if ( chrome && chrome.runtime && chrome.runtime.onMessage ) {
       chrome.runtime.onMessage.addListener( ( request: any ) => {
         console.log( request );
         if ( request.method == "setLocalStorage" ) {
@@ -19,10 +19,10 @@ export class StorageService {
 
   setItem( key: string, value: any, shareUpdate: boolean = true ) {
     const stringValue = JSON.stringify( value );
+    this.storage.setItem( key, stringValue );
     if ( chrome && chrome.runtime && shareUpdate ) {
-      chrome.runtime.sendMessage( { method: "setLocalStorage", key, value } );
+      chrome.runtime.sendMessage('sonarr.connect.beta',  { method: "setLocalStorage", key, value } );
     }
-    return this.storage.setItem( key, stringValue );
   }
 
   getItem( key: string ) {
@@ -39,6 +39,6 @@ export class StorageService {
       config.url = config.url.replace( "http://", '' );
       config.url = config.url.replace( "https://", '' );
     }
-    return this.setItem( 'config', config );
+    return this.setItem( 'config', config, true );
   }
 }

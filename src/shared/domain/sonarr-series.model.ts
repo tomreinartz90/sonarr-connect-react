@@ -49,7 +49,7 @@ export class SonarrSeriesModel {
   id: number;
   nextAiring?: Date;
 
-  constructor( obj: Object ) {
+  constructor( obj: any ) {
     Object.assign( this, obj );
 
     this.previousAiring = new Date( this.previousAiring );

@@ -5,9 +5,10 @@ import { SonarrSeriesEpisode } from './domain/sonarr-series-episode.model';
 import { Observable } from 'rxjs/Rx';
 import { StorageService } from './storage.service';
 import { SonarrConfig } from "./domain/sonar.config.model";
+import { DataManager } from "./data.manager.service";
 
 export class SonarrService {
-  activeShow: SonarrSeriesModel;
+  activeShow: DataManager<SonarrSeriesModel> = new DataManager<SonarrSeriesModel>('active-show');
   util    = new SonarrUtil();
   storage = new StorageService();
 
