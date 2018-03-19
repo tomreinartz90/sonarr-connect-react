@@ -22,5 +22,8 @@ export class SonarrHistoryItemModel {
   constructor( data: Object ) {
     Object.assign( this, data );
     this.date = new Date( this.date );
+    this.episode = new SonarrSeriesEpisode(this.episode);
+    this.series = new SonarrSeriesModel(this.series);
+    this.episode.series = this.series;
   }
 }

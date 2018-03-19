@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { StorageService } from './storage.service';
 import { SonarrConfig } from "./domain/sonar.config.model";
 import { DataManager } from "./data.manager.service";
+import { SonarrHistoryItemModel } from "./domain/sonarr-history-item.model";
 
 export class SonarrService {
   activeShow: DataManager<SonarrSeriesModel> = new DataManager<SonarrSeriesModel>( 'active-show' );
@@ -79,14 +80,14 @@ export class SonarrService {
     return this.get<Array<SonarrSeriesEpisode>>( '/episode', params );
   }
 
-  getHistory( page: number = 0 ): Observable<Array<SonarrSeriesEpisode>> {
+  getHistory( page: number = 0 ): Observable<Array<SonarrHistoryItemModel>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().historyItems ) );
     params.set( 'page', String( page + 1 ) );
-    return this.get<{ records: Array<Array<SonarrSeriesEpisode>> }>( '/history', params ).map( resp => resp.records )
+    return this.get<{ records: Array<SonarrHistoryItemModel> }>( '/history', params ).map( resp => resp.records )
       .do( (resp => {
         this.storage.setItem( 'history', resp );
-      }) ).startWith( this.storage.getItem( 'history' ) );
+      }) ).startWith( this.storage.getItem( 'history' ) || [] ).map( data => data.map( ( item: Object ) => new SonarrHistoryItemModel( item ) ) );
   }
 
   getSeriesUrl( series: SonarrSeriesModel, type: 'banner' | 'poster' ) {

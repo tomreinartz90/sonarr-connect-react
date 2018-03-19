@@ -5,10 +5,10 @@ import { Menu } from './components/menu/Menu.component';
 import { WelcomeRoute } from "./components/routes/Welcome.route";
 import { SeriesRoute } from "./components/routes/Series.route";
 import { ConfigRoute } from "./components/routes/Config.route";
-import { WantedRoute } from "./components/routes/Wanted.route";
 import { CalendarRoute } from "./components/routes/Calendar.route";
 import { ChromeService } from "./shared/chrome.service";
 import { Navigation, NavigationState } from "./shared/Navigation";
+import { HistoryRoute } from "./components/routes/History.route";
 
 export class App extends DataManagerComponent<NavigationState, {}> {
   navigation: Navigation = new Navigation();
@@ -32,11 +32,11 @@ export class App extends DataManagerComponent<NavigationState, {}> {
       case 'config':
         return <ConfigRoute/>;
 
-      case 'wanted':
-        return <WantedRoute/>;
-
       case 'calendar':
         return <CalendarRoute/>;
+
+      case 'history':
+        return <HistoryRoute/>;
 
       default:
         return <WelcomeRoute/>;
@@ -46,9 +46,9 @@ export class App extends DataManagerComponent<NavigationState, {}> {
   getHeader() {
     if ( this.state && this.state.data && this.state.data.state != 'welcome' && this.state.data.state != 'config' ) {
       return (
-          <div>
-            <Menu activeRoute={this.state.data.state}/>
-          </div>
+        <div>
+          <Menu activeRoute={this.state.data.state}/>
+        </div>
       );
     }
     return null;
@@ -56,12 +56,12 @@ export class App extends DataManagerComponent<NavigationState, {}> {
 
   render() {
     return (
-        <div className="App">
-          {this.getHeader()}
-          <main>
-            {this.getActiveRoute()}
-          </main>
-        </div>
+      <div className="App">
+        {this.getHeader()}
+        <main>
+          {this.getActiveRoute()}
+        </main>
+      </div>
     );
   }
 }
