@@ -3,13 +3,22 @@ import { SonarrService } from "../../shared/sonarr.service";
 import * as React from "react";
 import { SonarrSeriesModel } from "../../shared/domain/sonarr-series.model";
 import { Observable } from "rxjs/Observable";
+import { Navigation } from "../../shared/Navigation";
+import { SeriesEpisodeListComponent } from "./series-episode-list.component";
 
-export class SeriesDetailsComponent extends DataManagerComponent<SonarrSeriesModel, {}> {
+export class SeriesDetailsComponent extends DataManagerComponent<SonarrSeriesModel | undefined, {}> {
 
   sonarr: SonarrService = new SonarrService();
+  navigation: Navigation = new Navigation();
 
-  getData(): Observable<SonarrSeriesModel> {
-    return this.sonarr.activeShow.getData();
+  getData(): Observable<SonarrSeriesModel | undefined> {
+    return this.navigation.getStateAndParams().mergeMap( stateAndParams => {
+      if ( stateAndParams.state == 'series' && stateAndParams.params.has( 'showId' ) ) {
+        return this.sonarr.getSeries().take( 1 ).map( series => series.find( show => show.id == stateAndParams.params.get( 'showId' ) ) );
+      }
+      return Observable.of( undefined );
+
+    } );
   }
 
   getPoster( show: SonarrSeriesModel ) {
@@ -21,7 +30,8 @@ export class SeriesDetailsComponent extends DataManagerComponent<SonarrSeriesMod
   }
 
   render() {
-    const show: SonarrSeriesModel | null = this.state ? (this.state.data ) : null;
+    const show: SonarrSeriesModel | undefined = this.state ? (this.state.data ) : undefined;
+    console.log( show );
     if ( show ) {
       return (
         <div className="show">
@@ -30,7 +40,7 @@ export class SeriesDetailsComponent extends DataManagerComponent<SonarrSeriesMod
           </div>
           <div className="row">
             <div className="small-4 show-poster">
-              <img src={this.getPoster(show)}/>
+              <img src={this.getPoster( show )}/>
             </div>
             <div className="column small-8 show-info">
               <h2><span id="title">{show.title}</span></h2>
@@ -51,6 +61,7 @@ export class SeriesDetailsComponent extends DataManagerComponent<SonarrSeriesMod
           <div className="row">
             <p id="summary" className="summary">{show.overview}</p>
           </div>
+          <SeriesEpisodeListComponent show={show}/>
         </div>
       );
     }

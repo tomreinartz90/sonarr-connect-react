@@ -5,10 +5,10 @@ export class SonarrConfig {
   protocol: 'http://' | 'https://' = 'https://';
   url: string;
   apiKey: string;
-  daysInCalendar: number = 7;
-  wantedItems: number = 15;
-  historyItems: number = 15;
-  backgroundInterval: number = 5;
+  daysInCalendar: number           = 7;
+  wantedItems: number              = 15;
+  historyItems: number             = 50;
+  backgroundInterval: number       = 5;
   //allow setting props via index signature
   [key: string]: any;
 

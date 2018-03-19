@@ -9,7 +9,7 @@ export class SonarrSeriesEpisode {
   seasonNumber: number;
   episodeNumber: number;
   title: string;
-  airDate: string;
+  airDate: Date;
   airDateUtc: Date;
   overview: string;
   hasFile: boolean;
@@ -24,5 +24,6 @@ export class SonarrSeriesEpisode {
   constructor( obj: Object ) {
     Object.assign( this, obj );
     this.airDateUtc = new Date( this.airDateUtc );
+    this.airDate = new Date( this.airDate );
   }
 }

@@ -8,8 +8,8 @@ import { SonarrConfig } from "./domain/sonar.config.model";
 import { DataManager } from "./data.manager.service";
 
 export class SonarrService {
-  activeShow: DataManager<SonarrSeriesModel> = new DataManager<SonarrSeriesModel>('active-show');
-  util    = new SonarrUtil();
+  activeShow: DataManager<SonarrSeriesModel> = new DataManager<SonarrSeriesModel>( 'active-show' );
+  util = new SonarrUtil();
   storage = new StorageService();
 
   getCalendar(): Observable<Array<SonarrSeriesEpisode>> {
@@ -17,27 +17,27 @@ export class SonarrService {
     params.set( 'start', this.util.formatDate( new Date(), null ) );
     params.set( 'end', this.util.formatDate( new Date(), this.storage.getSonarrConfig().daysInCalendar ) );
     return this.get<Array<SonarrSeriesEpisode>>( '/calendar', params )
-        .do( (resp => {
-          this.storage.setItem( 'calendar', resp );
-        }) ).startWith( this.storage.getItem( 'calendar' ) );
+      .do( (resp => {
+        this.storage.setItem( 'calendar', resp );
+      }) ).startWith( this.storage.getItem( 'calendar' ) ).map( data => data.map( ( item: Object ) => new SonarrSeriesEpisode( item ) ) );
   }
 
   getGroupedCalendar(): Observable<Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }>> {
     return this.getCalendar().map( data => {
       if ( data ) {
-        let calendarDates: Array<string>                                                 = [];
+        let calendarDates: Array<Date> = [];
         let groupedEpisodes: Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }> = [];
         //create list of dates where episodes are aired
         data.forEach( episode => {
-          if ( calendarDates.indexOf( episode.airDate ) == -1 ) {
-            calendarDates.push( episode.airDate )
+          if ( !calendarDates.some( data => this.util.isDataDayTheSame( data, episode.airDateUtc ) ) ) {
+            calendarDates.push( episode.airDateUtc );
           }
         } );
 
         calendarDates.forEach( date => {
           groupedEpisodes.push( {
-            date: new Date( date ),
-            episodes: data.filter( episode => episode.airDate == date )
+            date: date,
+            episodes: data.filter( episode => this.util.isDataDayTheSame( date, episode.airDateUtc ) )
           } );
         } );
 
@@ -53,9 +53,9 @@ export class SonarrService {
     params.set( 'page', String( page + 1 ) );
     // params.set('end', this.util.formatDate(new Date(), this.storage.getSonarrConfig().daysInCalendar));
     return this.get<Array<SonarrSeriesEpisode>>( '/wanted/missing', params )
-        .do( resp => {
-          this.storage.setItem( 'missing', resp );
-        } ).startWith( this.storage.getItem( 'missing' ) );
+      .do( resp => {
+        this.storage.setItem( 'missing', resp );
+      } ).startWith( this.storage.getItem( 'missing' ) );
   }
 
   getSeries(): Observable<Array<SonarrSeriesModel>> {
@@ -64,12 +64,12 @@ export class SonarrService {
     params.set( 'sort_by', 'sortTitle' );
     params.set( 'order', 'asc' );
     return this.get<Array<SonarrSeriesModel>>( '/series', params )
-        .map( data => {
-          return data.sort( this.util.seriesComparator );
-        } )
-        .do( (resp => {
-          this.storage.setItem( 'series', resp );
-        }) ).startWith( this.storage.getItem( 'series' ) );
+      .map( data => {
+        return data.sort( this.util.seriesComparator );
+      } )
+      .do( (resp => {
+        this.storage.setItem( 'series', resp );
+      }) ).startWith( this.storage.getItem( 'series' ) );
   }
 
   getEpisodesForSeries( seriesId: number ): Observable<Array<SonarrSeriesEpisode>> {
@@ -84,9 +84,9 @@ export class SonarrService {
     params.set( 'pageSize', String( this.storage.getSonarrConfig().historyItems ) );
     params.set( 'page', String( page + 1 ) );
     return this.get<{ records: Array<Array<SonarrSeriesEpisode>> }>( '/history', params ).map( resp => resp.records )
-        .do( (resp => {
-          this.storage.setItem( 'history', resp );
-        }) ).startWith( this.storage.getItem( 'history' ) );
+      .do( (resp => {
+        this.storage.setItem( 'history', resp );
+      }) ).startWith( this.storage.getItem( 'history' ) );
   }
 
   getSeriesUrl( series: SonarrSeriesModel, type: 'banner' | 'poster' ) {
@@ -103,7 +103,7 @@ export class SonarrService {
   }
 
   setEpisode( episode: SonarrSeriesEpisode ) {
-    let url    = this.getSonarrUrlAndParams().url;
+    let url = this.getSonarrUrlAndParams().url;
     let apiKey = this.getSonarrUrlAndParams().apiKey;
 
     if ( url && apiKey ) {
@@ -140,8 +140,8 @@ export class SonarrService {
   }
 
   private getSonarrUrlAndParams(): { url: string, params: URLSearchParams, apiKey: string } {
-    let params         = new URLSearchParams();
-    let url            = this.storage.getSonarrConfig().getFullUrl() + '/api/';
+    let params = new URLSearchParams();
+    let url = this.storage.getSonarrConfig().getFullUrl() + '/api/';
     let apiKey: string = this.storage.getSonarrConfig().apiKey;
 
     params.set( 'apikey', apiKey );

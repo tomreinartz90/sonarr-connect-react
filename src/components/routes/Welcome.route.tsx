@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { DataManagerComponent } from "../core/Data.manager.component";
 import { SonarrService } from "../../shared/sonarr.service";
-import { DataManager } from "../../shared/data.manager.service";
+import { Navigation } from "../../shared/Navigation";
 
 export class WelcomeRoute extends DataManagerComponent<any, {}> {
   private sonarr: SonarrService = new SonarrService();
-  private navigation = new DataManager<any[]>( 'navigation' );
+  private navigation = new Navigation(  );
 
 
   getData() {
     return this.sonarr.getSystemStatus().do( ( data ) => {
-      this.navigation.setData( ['calendar'] );
+      this.navigation.setState( 'calendar' );
     }, (  ) => {
-      this.navigation.setData( ['config'] );
+      this.navigation.setState( 'config' );
     } );
   }
 

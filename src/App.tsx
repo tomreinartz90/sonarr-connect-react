@@ -2,31 +2,30 @@ import * as React from 'react';
 import './app.css';
 import { DataManagerComponent } from './components/core/Data.manager.component';
 import { Menu } from './components/menu/Menu.component';
-import { DataManager } from './shared/data.manager.service';
 import { WelcomeRoute } from "./components/routes/Welcome.route";
 import { SeriesRoute } from "./components/routes/Series.route";
 import { ConfigRoute } from "./components/routes/Config.route";
 import { WantedRoute } from "./components/routes/Wanted.route";
 import { CalendarRoute } from "./components/routes/Calendar.route";
 import { ChromeService } from "./shared/chrome.service";
+import { Navigation, NavigationState } from "./shared/Navigation";
 
-export class App extends DataManagerComponent<any[], {}> {
-  navigation: DataManager<any[]>;
+export class App extends DataManagerComponent<NavigationState, {}> {
+  navigation: Navigation = new Navigation();
 
   constructor( props: {}, context?: {} ) {
     super( props, context );
-    this.data       = ['welcome'];
-    this.navigation = new DataManager<any[]>( 'navigation' );
-    const chrome    = new ChromeService();
+    this.navigation.setState( 'welcome' );
+    const chrome = new ChromeService();
     chrome.getBadgeCountFromSonarr();
   }
 
   getData() {
-    return this.navigation.getData();
+    return this.navigation.getStateAndParams();
   }
 
   getActiveRoute() {
-    switch ( this.state.data[0] ) {
+    switch ( this.state ? this.state.data.state : null ) {
       case 'series':
         return <SeriesRoute/>;
 
@@ -45,10 +44,10 @@ export class App extends DataManagerComponent<any[], {}> {
   }
 
   getHeader() {
-    if ( this.state.data[0] != 'welcome' && this.state.data[0] != 'config' ) {
+    if ( this.state && this.state.data && this.state.data.state != 'welcome' && this.state.data.state != 'config' ) {
       return (
           <div>
-            <Menu activeRoute={this.state.data[0]}/>
+            <Menu activeRoute={this.state.data.state}/>
           </div>
       );
     }

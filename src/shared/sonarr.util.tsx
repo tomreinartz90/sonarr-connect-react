@@ -14,14 +14,14 @@ export class SonarrUtil {
     let label = "";
     if ( episodeFileCount == totalEpisodeCount ) {
       if ( status == 'continuing' ) {
-        label = episodeQuote[ 'continuing' ];
+        label = episodeQuote['continuing'];
       } else {
-        label = episodeQuote[ 'ended' ];
+        label = episodeQuote['ended'];
       }
     } else if ( monitored ) {
-      label = episodeQuote[ 'missing-monitored' ];
+      label = episodeQuote['missing-monitored'];
     } else {
-      label = episodeQuote[ 'missing-not-monitored' ];
+      label = episodeQuote['missing-not-monitored'];
     }
 
     return label;
@@ -48,7 +48,7 @@ export class SonarrUtil {
 //format episodenumbers to match scene formatting
   formatEpisodeNumer = function ( seasonNumber: number, episodeNumber: number ) {
     return "S" + (seasonNumber.toString().length === 1 ? '0' : '') + seasonNumber + "E" + (episodeNumber.toString().length === 1 ? '0' : '') + episodeNumber;
-  }
+  };
 
 //comparator to sort seasons by seasonNumber
   seasonComparator( a: any, b: any ) {
@@ -78,5 +78,9 @@ export class SonarrUtil {
       return 1;
     }
     return 0;
+  }
+
+  isDataDayTheSame( date1: Date, date2: Date ) {
+    return date1.getDate() == date2.getDate() && date1.getMonth() == date2.getMonth() && date1.getFullYear() == date2.getFullYear();
   }
 }
