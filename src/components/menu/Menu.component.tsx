@@ -1,18 +1,10 @@
 import * as React from 'react';
-import { DataManager } from '../../shared/data.manager.service';
+import { MenuItem } from "./MenuItem.component";
 
 export class Menu extends React.Component<{ activeRoute: string }> {
-  navigation: DataManager<string> = new DataManager<string>( 'navigation' );
 
-  setMenu( menu: string ) {
-    this.navigation.setData( menu );
-  }
-
-  getIsActiveRoute( route: string ) {
-    if ( route && this.props && this.props.activeRoute == route ) {
-      return 'active';
-    }
-    return '';
+  getIsActiveRoute( route: string ): boolean {
+    return !!route && !!this.props && this.props.activeRoute == route;
   }
 
   render() {
@@ -20,26 +12,10 @@ export class Menu extends React.Component<{ activeRoute: string }> {
         <header className="small-12">
           <nav>
             <div className="row">
-              <a className={this.getIsActiveRoute( 'wanted' )} onClick={() => this.setMenu( 'wanted' )}>
-                <i className="material-icons">local_movies</i>
-                <span>Wanted</span>
-              </a>
-              <a className={this.getIsActiveRoute( 'calendar' )} onClick={() => this.setMenu( 'calendar' )}>
-                <i className="material-icons">date_range</i>
-                <span>Calendar</span>
-              </a>
-              <a className={this.getIsActiveRoute( 'series' )} onClick={() => this.setMenu( 'series' )}>
-                <i className="material-icons">movie_filter</i>
-                <span>Series</span>
-              </a>
-              <a className={this.getIsActiveRoute( 'history' )} onClick={() => this.setMenu( 'history' )}>
-                <i className="material-icons">history</i>
-                <span>History</span>
-              </a>
-              <a className={this.getIsActiveRoute( 'config' )} onClick={() => this.setMenu( 'config' )}>
-                <i className="material-icons">settings</i>
-                <span>Config</span>
-              </a>
+              <MenuItem isActive={this.getIsActiveRoute( 'calendar' )} route='calendar' icon='date_range'/>
+              <MenuItem isActive={this.getIsActiveRoute( 'series' )} route='series' icon='movie_filter'/>
+              <MenuItem isActive={this.getIsActiveRoute( 'history' )} route='history' icon='history'/>
+              <MenuItem isActive={this.getIsActiveRoute( 'config' )} route='config' icon='settings'/>
             </div>
           </nav>
         </header>
