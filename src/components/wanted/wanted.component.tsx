@@ -9,7 +9,7 @@ export class WantedComponent extends DataManagerComponent<Array<SonarrSeriesEpis
   sonarr: SonarrService = new SonarrService();
 
   getData() {
-    return this.sonarr.getWanted().map( resp => resp ? resp.records : [] );
+    return this.sonarr.getWanted();
   }
 
   render() {

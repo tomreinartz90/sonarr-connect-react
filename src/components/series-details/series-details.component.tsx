@@ -44,7 +44,7 @@ export class SeriesDetailsComponent extends DataManagerComponent<SonarrSeriesMod
             </div>
             <div className="column small-8 show-info">
               <h2><span id="title">{show.title}</span></h2>
-              <h6 id="start-year">Started {show.firstAired}</h6>
+              <h6 id="start-year">Started {show.firstAired.toLocaleDateString()}</h6>
               <h6 id="show-status"><i className="material-icons">play_arrow</i>{show.status}</h6>
               <h6>
                 <i className="material-icons">collections_bookmark</i>

@@ -10,18 +10,16 @@ declare let chrome: any;
 export class ChromeService {
 
   private settings = new StorageService();
-  private sonarr   = new SonarrService();
+  private sonarr = new SonarrService();
 
   constructor() {
     this.setTimer();
   }
 
   getBadgeCountFromSonarr() {
-    this.sonarr.getWanted( 0 ).subscribe( ( resp: any ) => {
-      if ( resp ) {
-        this.setBadge( `${resp.totalRecords}` );
-      }
-    } )
+    this.sonarr.getTotalWanted().subscribe( ( resp: number ) => {
+      this.setBadge( `${resp}` );
+    } );
   }
 
   setBadge( num: any ) {
@@ -37,27 +35,27 @@ export class ChromeService {
   setTimer() {
     // set interval
     setTimeout( () => {
-          this.getBadgeCountFromSonarr();
-          this.setTimer();
-        },
-        (this.settings.getSonarrConfig().backgroundInterval || 5) * 60000
-    )
+        this.getBadgeCountFromSonarr();
+        this.setTimer();
+      },
+      (this.settings.getSonarrConfig().backgroundInterval || 5) * 60000
+    );
 
   }
 
   isBackgroundScript() {
-    let name    = 'background';
-    let url     = window.location.href;
-    name        = name.replace( /[\[\]]/g, "\\$&" );
-    let regex   = new RegExp( "[?&]" + name + "(=([^&#]*)|&|#|$)" ),
-        results = regex.exec( url );
+    let name = 'background';
+    let url = window.location.href;
+    name = name.replace( /[\[\]]/g, "\\$&" );
+    let regex = new RegExp( "[?&]" + name + "(=([^&#]*)|&|#|$)" ),
+      results = regex.exec( url );
     if ( !results ) {
       return false;
     }
-    if ( !results[ 2 ] ) {
+    if ( !results[2] ) {
       return false;
     }
-    return decodeURIComponent( results[ 2 ].replace( /\+/g, " " ) );
+    return decodeURIComponent( results[2].replace( /\+/g, " " ) );
   }
 
 

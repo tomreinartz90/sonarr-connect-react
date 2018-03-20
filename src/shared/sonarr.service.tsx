@@ -5,22 +5,19 @@ import { SonarrSeriesEpisode } from './domain/sonarr-series-episode.model';
 import { Observable } from 'rxjs/Rx';
 import { StorageService } from './storage.service';
 import { SonarrConfig } from "./domain/sonar.config.model";
-import { DataManager } from "./data.manager.service";
 import { SonarrHistoryItemModel } from "./domain/sonarr-history-item.model";
 
 export class SonarrService {
-  activeShow: DataManager<SonarrSeriesModel> = new DataManager<SonarrSeriesModel>( 'active-show' );
   util = new SonarrUtil();
   storage = new StorageService();
 
   getCalendar(): Observable<Array<SonarrSeriesEpisode>> {
-    let params = this.getSonarrUrlAndParams().params;
+    const params = this.getSonarrUrlAndParams().params;
     params.set( 'start', this.util.formatDate( new Date(), null ) );
     params.set( 'end', this.util.formatDate( new Date(), this.storage.getSonarrConfig().daysInCalendar ) );
-    return this.get<Array<SonarrSeriesEpisode>>( '/calendar', params )
-      .do( (resp => {
-        this.storage.setItem( 'calendar', resp );
-      }) ).startWith( this.storage.getItem( 'calendar' ) ).map( data => data.map( ( item: Object ) => new SonarrSeriesEpisode( item ) ) );
+
+    const data$ = this.get<Array<SonarrSeriesEpisode>>( '/calendar', params );
+    return this.mapDataAndStartWithLocalStorage<SonarrSeriesEpisode>( data$, 'calendar', SonarrSeriesEpisode );
   }
 
   getGroupedCalendar(): Observable<Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }>> {
@@ -48,46 +45,44 @@ export class SonarrService {
     } );
   }
 
-  getWanted( page: number = 0 ): Observable<{ pageSize: number, page: number, records: Array<SonarrSeriesEpisode>, totalRecords: number }> {
-    let params = this.getSonarrUrlAndParams().params;
+  getTotalWanted(): Observable<number> {
+    const params = this.getSonarrUrlAndParams().params;
+    params.set( 'pageSize', '1' );
+    params.set( 'page', '0' );
+    return this.get<any>( '/wanted/missing', params ).map( resp => resp.totalRecords );
+  }
+
+  getWanted( page: number = 0 ): Observable<Array<SonarrSeriesEpisode>> {
+    const params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'page', String( page + 1 ) );
     // params.set('end', this.util.formatDate(new Date(), this.storage.getSonarrConfig().daysInCalendar));
-    return this.get<Array<SonarrSeriesEpisode>>( '/wanted/missing', params )
-      .do( resp => {
-        this.storage.setItem( 'missing', resp );
-      } ).startWith( this.storage.getItem( 'missing' ) );
+    const data$ = this.get<{ records: Array<SonarrSeriesEpisode> }>( '/wanted/missing', params ).map( resp => resp.records );
+    return this.mapDataAndStartWithLocalStorage<SonarrSeriesEpisode>( data$, 'missing', SonarrSeriesEpisode );
   }
 
   getSeries(): Observable<Array<SonarrSeriesModel>> {
-    let params = this.getSonarrUrlAndParams().params;
+    const params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'sort_by', 'sortTitle' );
     params.set( 'order', 'asc' );
-    return this.get<Array<SonarrSeriesModel>>( '/series', params )
-      .map( data => {
-        return data.sort( this.util.seriesComparator );
-      } )
-      .do( (resp => {
-        this.storage.setItem( 'series', resp );
-      }) ).startWith( this.storage.getItem( 'series' ) );
+    const data$ = this.get<Array<SonarrSeriesModel>>( '/series', params ).map( data => data.sort( this.util.seriesComparator ) );
+    return this.mapDataAndStartWithLocalStorage<SonarrSeriesModel>( data$, 'series', SonarrSeriesModel );
   }
 
   getEpisodesForSeries( seriesId: number ): Observable<Array<SonarrSeriesEpisode>> {
-    let params = this.getSonarrUrlAndParams().params;
+    const params = this.getSonarrUrlAndParams().params;
     params.set( 'seriesId', String( seriesId ) );
     // http://192.168.1.100:8989/api/episode?seriesId=10&apikey=aa9838e7d4444602849061ca1a6bffa7
     return this.get<Array<SonarrSeriesEpisode>>( '/episode', params ).map( episodes => episodes.map( episode => new SonarrSeriesEpisode( episode ) ) );
   }
 
   getHistory( page: number = 0 ): Observable<Array<SonarrHistoryItemModel>> {
-    let params = this.getSonarrUrlAndParams().params;
+    const params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().historyItems ) );
     params.set( 'page', String( page + 1 ) );
-    return this.get<{ records: Array<SonarrHistoryItemModel> }>( '/history', params ).map( resp => resp.records )
-      .do( (resp => {
-        this.storage.setItem( 'history', resp );
-      }) ).startWith( this.storage.getItem( 'history' ) || [] ).map( data => data.map( ( item: Object ) => new SonarrHistoryItemModel( item ) ) );
+    const data$ = this.get<{ records: Array<SonarrHistoryItemModel> }>( '/history', params ).map( resp => resp.records );
+    return this.mapDataAndStartWithLocalStorage<SonarrHistoryItemModel>( data$, 'history', SonarrHistoryItemModel );
   }
 
   getSeriesUrl( series: SonarrSeriesModel, type: 'banner' | 'poster' ) {
@@ -115,7 +110,7 @@ export class SonarrService {
   }
 
   getSystemStatus() {
-    let params = this.getSonarrUrlAndParams().params;
+    const params = this.getSonarrUrlAndParams().params;
     return this.get<Object>( '/system/status', params );
   }
 
@@ -129,25 +124,30 @@ export class SonarrService {
 
   private get<T>( path: string, params: URLSearchParams ): Observable<T> {
     let url = this.getSonarrUrlAndParams().url;
-//    let apiKey  = this.getSonarrUrlAndParams().apiKey;
-//    let params = this.getSonarrUrlAndParams().params;
     return Observable.ajax.getJSON( url + path + '?' + params.toString() );
-//    if ( url && apiKey ) {
-//      return this.http.get( url + path, { search: params } ).map( resp => resp.json() );
-//    } else {
-    // goto config page when url or api key is not found
-//      return Observable.never();
-//    }
   }
 
   private getSonarrUrlAndParams(): { url: string, params: URLSearchParams, apiKey: string } {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     let url = this.storage.getSonarrConfig().getFullUrl() + '/api/';
     let apiKey: string = this.storage.getSonarrConfig().apiKey;
-
     params.set( 'apikey', apiKey );
-
     return { url: url, params: params, apiKey: apiKey };
+  }
+
+  /**
+   * simple method to store data in locale storage and get the old set from it, and map the array of data to Objects by its ObjectConstructor.
+   * @param data$
+   * @param storageKey
+   * @param objectConstructor
+   * @returns {OperatorFunction<T, R>}
+   */
+  private mapDataAndStartWithLocalStorage<T>( data$: Observable<Array<T>>, storageKey: string, objectConstructor: any ): Observable<Array<T>> {
+    return data$
+      .do( resp => this.storage.setItem( storageKey, resp ) )
+      .startWith( this.storage.getItem( storageKey ) )
+      .filter( resp => resp != null )
+      .map( data => data.map( ( item: Object ) => new objectConstructor( item ) ) );
   }
 
 
