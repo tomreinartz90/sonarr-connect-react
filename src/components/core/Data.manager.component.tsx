@@ -32,7 +32,7 @@ export abstract class DataManagerComponent<D, P = {}, T = {}> extends React.Comp
 
   set data( data: D ) {
     const modifiedData: D = this.onBeforeUpdateData( data );
-    const state           = Object.assign( this.state || {}, { data: modifiedData } );
+    const state = Object.assign( this.state || {}, { data: modifiedData } );
 
     if ( this.mounted ) {
       this.setState( state );
@@ -63,11 +63,14 @@ export abstract class DataManagerComponent<D, P = {}, T = {}> extends React.Comp
       this.data$.unsubscribe();
     }
 
-    this.data$ = this.getData().subscribe( data => {
-          this.setState( { data: data } );
-        },
-        error => this.onDataError( error ),
-        () => this.onDataComplete() );
+    this.data$ = this.getData().distinctUntilChanged( ( previous: any, current: any ) => {
+      // reduce the amount of state updates when the value of data has not changed we will not emit its value.
+      return JSON.stringify(previous) == JSON.stringify(current);
+    }).subscribe( data => {
+        this.setState( { data: data } );
+      },
+      error => this.onDataError( error ),
+      () => this.onDataComplete() );
   }
 
 }
