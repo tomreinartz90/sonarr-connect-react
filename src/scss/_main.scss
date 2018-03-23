@@ -43,7 +43,12 @@ main > * {
   overflow-y: auto;
   overflow-x: hidden;
 
-  max-height: calc(100vh - 3rem);
+  //max-height: calc(100vh - 3rem);
+
+  &.config {
+    height: 100%;
+  }
+
   &:not(:empty) {
     padding: .5rem;
   }

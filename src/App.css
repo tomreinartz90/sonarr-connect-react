@@ -4092,8 +4092,9 @@ main > * {
   background-color: #cacaca;
   display: block;
   overflow-y: auto;
-  overflow-x: hidden;
-  max-height: calc(100vh - 3rem); }
+  overflow-x: hidden; }
+  main > *.config {
+    height: 100%; }
   main > *:not(:empty) {
     padding: .5rem; }
   main > *:nth-child(2) {
