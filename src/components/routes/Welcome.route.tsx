@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DataManagerComponent } from "../core/Data.manager.component";
 import { SonarrService } from "../../shared/sonarr.service";
 import { Navigation } from "../../shared/Navigation";
+import { Redirect } from "react-router-dom";
 
 export class WelcomeRoute extends DataManagerComponent<any, {}> {
   private sonarr: SonarrService = new SonarrService();
@@ -16,10 +17,6 @@ export class WelcomeRoute extends DataManagerComponent<any, {}> {
     } );
   }
 
-  getConnected() {
-    return "Connected to Sonarr " + (this.state ? this.state.data.version : null);
-  }
-
   getConnecting() {
     return "Connecting to Sonarr";
   }
@@ -30,7 +27,7 @@ export class WelcomeRoute extends DataManagerComponent<any, {}> {
 
   getWelcome() {
     if ( this.state && this.data ) {
-      return this.getConnected();
+      return <Redirect to="calendar"/>
     } else if ( this.state && !this.data ) {
       return this.getError();
     } else {

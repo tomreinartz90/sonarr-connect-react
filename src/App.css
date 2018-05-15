@@ -4088,25 +4088,14 @@ body {
   width: 400px;
   height: 100%; }
 
-main > * {
+main {
   background-color: #cacaca;
   display: block;
   overflow-y: auto;
-  overflow-x: hidden; }
-  main > *.config {
-    height: 100%; }
+  overflow-x: hidden;
+  height: 600px; }
   main > *:not(:empty) {
     padding: .5rem; }
-  main > *:nth-child(2) {
-    z-index: 100;
-    left: 0;
-    right: 0;
-    height: 100%; }
-  main > *:nth-child(3) {
-    z-index: 80;
-    left: 0;
-    right: 0;
-    top: 0; }
 
 .static {
   overflow: hidden; }
