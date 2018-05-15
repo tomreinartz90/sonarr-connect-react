@@ -1,67 +1,64 @@
 import * as React from 'react';
 import './app.css';
-import { DataManagerComponent } from './components/core/Data.manager.component';
+
 import { Menu } from './components/menu/Menu.component';
 import { WelcomeRoute } from "./routes/Welcome.route";
 import { SeriesRoute } from "./routes/Series.route";
 import { ConfigRoute } from "./routes/Config.route";
 import { CalendarRoute } from "./routes/Calendar.route";
 import { ChromeService } from "./shared/chrome.service";
-import { Navigation, NavigationState } from "./shared/Navigation";
 import { HistoryRoute } from "./routes/History.route";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { SonarrConfig } from "./shared/domain/sonar.config.model";
+import { SonarrSeriesEpisode } from "./shared/domain/sonarr-series-episode.model";
+import { SonarrSeriesModel } from "./shared/domain/sonarr-series.model";
+import { SonarrHistoryItemModel } from "./shared/domain/sonarr-history-item.model";
 
-export class App extends DataManagerComponent<NavigationState, {}> {
-  navigation: Navigation = new Navigation();
+
+type SonarrAppState = {
+  config: SonarrConfig,
+  calendar: Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }>,
+  wanted: Array<SonarrSeriesEpisode>,
+  series: Array<SonarrSeriesModel>,
+  history: Array<SonarrHistoryItemModel>
+}
+
+export class App extends React.Component<{ dispatch?: any }, SonarrAppState> {
 
   constructor( props: {}, context?: {} ) {
     super( props, context );
-    this.navigation.setState( 'welcome' );
     const chrome = new ChromeService();
+
     chrome.getBadgeCountFromSonarr();
+    this.setInitialState();
   }
 
-  getData() {
-    return this.navigation.getStateAndParams();
+  setInitialState() {
+    this.state = {
+      config: new SonarrConfig(),
+      calendar: [],
+      wanted: [],
+      history: [],
+      series: []
+    };
   }
 
-  getActiveRoute() {
-    switch ( this.state ? this.state.data.state : null ) {
-      case 'series':
-        return <SeriesRoute/>;
-
-      case 'config':
-        return <ConfigRoute/>;
-
-      case 'calendar':
-        return <CalendarRoute/>;
-
-      case 'history':
-        return <HistoryRoute/>;
-
-      default:
-        return <WelcomeRoute/>;
-    }
-  }
-
-  getHeader() {
-    if ( this.state && this.state.data && this.state.data.state != 'welcome' && this.state.data.state != 'config' ) {
-      return (
-          <div>
-            <Menu activeRoute={this.state.data.state}/>
-          </div>
-      );
-    }
-    return null;
-  }
 
   render() {
     return (
-        <div className="App">
-          {this.getHeader()}
-          <main>
-            {this.getActiveRoute()}
-          </main>
-        </div>
+        <Router>
+          <div className="App">
+            <Menu/>
+            <main>
+              {/*{this.getActiveRoute()}*/}
+              <Route exact={true} path="/" component={() => <WelcomeRoute/>}/>
+              <Route path="/calendar" component={() => <CalendarRoute wanted={this.state.wanted} calendar={this.state.calendar}/>}/>
+              <Route path="/history" component={() => <HistoryRoute/>}/>
+              <Route path="/config" component={() => <ConfigRoute/>}/>
+              <Route path="/series" component={() => <SeriesRoute/>}/>
+            </main>
+          </div>
+        </Router>
     );
   }
 }

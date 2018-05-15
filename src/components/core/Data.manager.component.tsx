@@ -3,8 +3,11 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from "rxjs/Subscription";
 
 export abstract class DataManagerComponent<D, P = {}, T = {}> extends React.Component<P, { data: D } & T> {
+
+  subscriptions: Array<Subscription> = [];
   protected data$: Subscription;
   private mounted: boolean = false;
+
 
   constructor( props: P, context?: {} ) {
     super( props, context );
@@ -56,6 +59,10 @@ export abstract class DataManagerComponent<D, P = {}, T = {}> extends React.Comp
     if ( this.data$ ) {
       this.data$.unsubscribe();
     }
+
+    if ( this.subscriptions && this.subscriptions.length ) {
+      this.subscriptions.forEach( sub => sub.unsubscribe() );
+    }
   }
 
   protected listenToData() {
@@ -65,8 +72,8 @@ export abstract class DataManagerComponent<D, P = {}, T = {}> extends React.Comp
 
     this.data$ = this.getData().distinctUntilChanged( ( previous: any, current: any ) => {
       // reduce the amount of state updates when the value of data has not changed we will not emit its value.
-      return JSON.stringify(previous) == JSON.stringify(current);
-    }).subscribe( data => {
+      return JSON.stringify( previous ) == JSON.stringify( current );
+    } ).subscribe( data => {
         this.setState( { data: data } );
       },
       error => this.onDataError( error ),

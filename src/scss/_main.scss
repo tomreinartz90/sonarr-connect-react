@@ -38,30 +38,15 @@ body {
   height: 100%;
 }
 
-main > * {
+main {
   background-color: $medium-gray;
   display: block;
   overflow-y: auto;
   overflow-x: hidden;
+  height: 600px;
 
-  max-height: calc(100vh - 3rem);
-  &:not(:empty) {
+  > *:not(:empty) {
     padding: .5rem;
-  }
-  &:nth-child(2) {
-    z-index: 100;
-    //position: absolute;
-    left: 0;
-    right: 0;
-    height: 100%;
-
-  }
-  &:nth-child(3) {
-    z-index: 80;
-    //position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
   }
 }
 

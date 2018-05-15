@@ -87,15 +87,21 @@ export class SonarrService {
 
   getSeriesUrl( series: SonarrSeriesModel, type: 'banner' | 'poster' ) {
     const image: SonarrImageModel | undefined = series.images.find( ( image: SonarrImageModel ) => image.coverType == type );
+    let url = '';
+
     if ( image ) {
       if ( image.url.indexOf( 'MediaCover' ) ) {
         let start = image.url.indexOf( 'MediaCover' );
-        return this.getSonarrUrlAndParams().url + image.url.substring( start ) + '&apikey=' + this.getSonarrUrlAndParams().apiKey;
+        url = this.getSonarrUrlAndParams().url + image.url.substring( start ) + '&apikey=' + this.getSonarrUrlAndParams().apiKey;
       } else {
-        return image.url;
+        url = image.url;
       }
     }
-    return '';
+
+    if ( type == 'poster' ) {
+      url = url.replace( 'poster.', 'poster-250.' );
+    }
+    return url;
   }
 
   setEpisode( episode: SonarrSeriesEpisode ) {

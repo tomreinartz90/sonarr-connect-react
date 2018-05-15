@@ -8,7 +8,7 @@ export class EpisodeComponent extends React.Component<{ episode: SonarrSeriesEpi
   private navigation: Navigation = new Navigation();
 
   getSeriesTitle( episode: SonarrSeriesEpisode ) {
-    if ( episode.series ) {
+    if ( episode.series && episode.series.title ) {
       return (
         <a className="series-title"
            onClick={() => this.navigation.setState( 'series', ['showId', episode.series.id] )}>{episode.series.title}</a>
