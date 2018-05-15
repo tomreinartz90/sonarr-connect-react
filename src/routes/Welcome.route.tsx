@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { DataManagerComponent } from "../core/Data.manager.component";
-import { SonarrService } from "../../shared/sonarr.service";
-import { Navigation } from "../../shared/Navigation";
+import { DataManagerComponent } from "../components/core/Data.manager.component";
+import { SonarrService } from "../shared/sonarr.service";
+import { Navigation } from "../shared/Navigation";
 
 export class WelcomeRoute extends DataManagerComponent<any, {}> {
   private sonarr: SonarrService = new SonarrService();

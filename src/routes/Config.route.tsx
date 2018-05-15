@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ChangeEvent } from 'react';
 import { RouteHeader } from "./Route.header";
-import { DataManagerComponent } from "../core/Data.manager.component";
-import { SonarrConfig } from "../../shared/domain/sonar.config.model";
-import { SonarrService } from "../../shared/sonarr.service";
+import { DataManagerComponent } from "../components/core/Data.manager.component";
+import { SonarrConfig } from "../shared/domain/sonar.config.model";
+import { SonarrService } from "../shared/sonarr.service";
 import { Observable } from "rxjs/Rx";
-import { DataManager } from "../../shared/data.manager.service";
+import { DataManager } from "../shared/data.manager.service";
 
 export class ConfigRoute extends DataManagerComponent<SonarrConfig, any> {
   private sonarr: SonarrService = new SonarrService();
