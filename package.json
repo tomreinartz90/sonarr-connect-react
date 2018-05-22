@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/prop-types": "^15.5.3",
     "@types/react-redux": "^6.0.0",
     "@types/react-router-dom": "^4.2.6",
     "foundation-sites": "^6.3.0",
     "node-sass-chokidar": "^1.1.0",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",

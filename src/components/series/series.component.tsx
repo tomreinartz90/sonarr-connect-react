@@ -1,57 +1,49 @@
-import { DataManagerComponent } from "../core/Data.manager.component";
-import { SonarrService } from "../../shared/sonarr.service";
 import * as React from "react";
-import { SonarrSeriesModel } from "../../shared/domain/sonarr-series.model";
 import { ShowComponent } from "../show/show.component";
 import { SeriesDetailsComponent } from "../series-details/series-details.component";
-import { Navigation } from "../../shared/Navigation";
 import { DataManager } from "../../shared/data.manager.service";
+import { Subscription } from "rxjs/Subscription";
+import { SonarrSeriesState } from "../../reducers/series.reducer";
+import { Store } from "redux";
+import { initList, searchShow } from "../../reducers/series.actions";
 
-export class SeriesComponent extends DataManagerComponent<Array<SonarrSeriesModel>, {}, { showList: boolean, searchQuery: string }> {
+export class SeriesComponent extends React.Component<{ store?: Store, series?: SonarrSeriesState, }, { showList: boolean, searchQuery: string }> {
+  subscriptions: Array<Subscription> = [];
+  search: DataManager<string>        = new DataManager<string>( 'SeriesSearch' );
 
-  sonarr: SonarrService = new SonarrService();
-  navigation: Navigation = new Navigation();
-  search: DataManager<string> = new DataManager<string>( 'SeriesSearch' );
-
-  getData() {
-    return this.sonarr.getSeries();
+  constructor( a: any, b: any ) {
+    super( a, b );
+    this.dispatch = this.dispatch.bind( this );
   }
 
   componentDidMount() {
-    super.componentDidMount();
-    const nav$ = this.navigation.getStateAndParams().subscribe( stateAndParams => {
-      this.setState( { showList: !stateAndParams.params.get( 'showId' ) } );
-    } );
-
-    const search$ = this.search.getData().debounceTime( 50 ).subscribe( query => this.setState( { searchQuery: query } ) );
-
-    this.subscriptions.push( nav$ );
-    this.subscriptions.push( search$ );
-  }
-
-  onAfterUpdateData( data: Array<SonarrSeriesModel> ) {
-    return super.onAfterUpdateData( data );
-  }
-
-  getShows() {
-    const shows: Array<SonarrSeriesModel> = (this.state && this.state.showList) ? (this.state.data || []) : [];
-    if ( this.state && this.state.searchQuery && this.state.searchQuery != "" ) {
-      return shows.filter( show => (show.cleanTitle.indexOf( this.state.searchQuery.replace( / /g, '' ).toLowerCase() ) != -1) );
+    console.log( 'mount' );
+    if ( this.props.store && (!this.props.series || this.props.series.shows.length == 0) ) {
+      initList( this.dispatch )
     }
-    return shows;
+  }
+
+  dispatch( arg: any ) {
+    if ( this.props.store ) {
+      return this.props.store.dispatch( arg )
+    }
+    return () => () => {
+      return console.error( 'Dispatch not available' )
+    }
   }
 
   render() {
-    const shows = this.getShows();
+    const shows = this.props.series ? this.props.series.filteredShows : [];
+    console.log( this );
     return (
-      <div>
-        <input type="text" placeholder="Search" autoFocus={true} onChange={( event ) => this.search.setData( event.target.value )}/>
-        {shows.map( show => {
-          return <ShowComponent show={show} key={show.id}/>;
-        } )}
-        <SeriesDetailsComponent/>
+        <div>
+          <input type="text" placeholder="Search" autoFocus={true} onChange={( event ) => this.dispatch( searchShow( event.target.value ) )}/>
+          {shows.map( show => {
+            return <ShowComponent show={show} key={show.id}/>;
+          } )}
+          <SeriesDetailsComponent/>
 
-      </div>
+        </div>
     );
   }
 }

@@ -20,7 +20,7 @@ export class WelcomeRoute extends DataManagerComponent<any, {}> {
 
   getWelcome() {
     if ( this.state && this.data ) {
-      return <Redirect to="calendar"/>
+      return <Redirect to="series"/>
     } else if ( this.state && !this.data ) {
       return this.getError();
     } else {

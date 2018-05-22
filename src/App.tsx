@@ -11,19 +11,20 @@ import { HistoryRoute } from "./routes/History.route";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { SonarrConfig } from "./shared/domain/sonar.config.model";
 import { SonarrSeriesEpisode } from "./shared/domain/sonarr-series-episode.model";
-import { SonarrSeriesModel } from "./shared/domain/sonarr-series.model";
 import { SonarrHistoryItemModel } from "./shared/domain/sonarr-history-item.model";
+import { SonarrSeriesState } from "./reducers/series.reducer";
+import { Store } from "redux";
 
 
 type SonarrAppState = {
   config: SonarrConfig,
   calendar: Array<{ date: Date, episodes: Array<SonarrSeriesEpisode> }>,
   wanted: Array<SonarrSeriesEpisode>,
-  series: Array<SonarrSeriesModel>,
+  series: SonarrSeriesState,
   history: Array<SonarrHistoryItemModel>
 }
 
-export class App extends React.Component<{ dispatch?: any }, SonarrAppState> {
+export class App extends React.Component<{ store?: Store }, SonarrAppState> {
 
   constructor( props: {}, context?: {} ) {
     super( props, context );
@@ -31,6 +32,18 @@ export class App extends React.Component<{ dispatch?: any }, SonarrAppState> {
 
     chrome.getBadgeCountFromSonarr();
     this.setInitialState();
+
+
+    if ( this.props.store ) {
+      const store = this.props.store;
+      store.subscribe( () => {
+            if ( this.state != store.getState() ) {
+              console.log( this.state, store.getState() );
+              this.setState( store.getState() )
+            }
+          }
+      );
+    }
   }
 
   setInitialState() {
@@ -39,12 +52,21 @@ export class App extends React.Component<{ dispatch?: any }, SonarrAppState> {
       calendar: [],
       wanted: [],
       history: [],
-      series: []
+      series: { shows: [], filteredShows: [], searchQuery: "" }
     };
+  }
+
+  getState() {
+    if ( this.props.store ) {
+      return this.props.store.getState();
+    } else {
+      return {};
+    }
   }
 
 
   render() {
+    console.log( this );
     return (
         <Router>
           <div className="App">
@@ -55,7 +77,7 @@ export class App extends React.Component<{ dispatch?: any }, SonarrAppState> {
               <Route path="/calendar" component={() => <CalendarRoute wanted={this.state.wanted} calendar={this.state.calendar}/>}/>
               <Route path="/history" component={() => <HistoryRoute/>}/>
               <Route path="/config" component={() => <ConfigRoute/>}/>
-              <Route path="/series" component={() => <SeriesRoute/>}/>
+              <Route path="/series" component={() => <SeriesRoute store={this.props.store} series={this.state.series}/>}/>
             </main>
           </div>
         </Router>
