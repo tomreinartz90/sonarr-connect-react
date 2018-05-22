@@ -4,6 +4,7 @@ import { SonarrService } from "../shared/sonarr.service";
 const sonarrService: SonarrService = new SonarrService();
 
 export function searchShow( searchQuery: string ) {
+  console.log( searchQuery );
   return {
     type: 'SERIES_SEARCH_LIST',
     searchQuery

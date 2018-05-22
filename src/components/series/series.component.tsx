@@ -17,10 +17,7 @@ export class SeriesComponent extends React.Component<{ store?: Store, series?: S
   }
 
   componentDidMount() {
-    console.log( 'mount' );
-    if ( this.props.store && (!this.props.series || this.props.series.shows.length == 0) ) {
-      initList( this.dispatch )
-    }
+    initList( this.dispatch )
   }
 
   dispatch( arg: any ) {
@@ -34,7 +31,6 @@ export class SeriesComponent extends React.Component<{ store?: Store, series?: S
 
   render() {
     const shows = this.props.series ? this.props.series.filteredShows : [];
-    console.log( this );
     return (
         <div>
           <input type="text" placeholder="Search" autoFocus={true} onChange={( event ) => this.dispatch( searchShow( event.target.value ) )}/>

@@ -3,10 +3,6 @@ import { MenuItem } from "./MenuItem.component";
 
 export class Menu extends React.Component<{}> {
 
-  componentDidMount() {
-    console.log( 'mount' );
-  }
-
   render() {
     return (
         <header className="small-12">

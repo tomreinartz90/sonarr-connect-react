@@ -38,7 +38,6 @@ export class App extends React.Component<{ store?: Store }, SonarrAppState> {
       const store = this.props.store;
       store.subscribe( () => {
             if ( this.state != store.getState() ) {
-              console.log( this.state, store.getState() );
               this.setState( store.getState() )
             }
           }
@@ -66,18 +65,17 @@ export class App extends React.Component<{ store?: Store }, SonarrAppState> {
 
 
   render() {
-    console.log( this );
     return (
         <Router>
           <div className="App">
             <Menu/>
             <main>
               {/*{this.getActiveRoute()}*/}
-              <Route exact={true} path="/" component={() => <WelcomeRoute/>}/>
-              <Route path="/calendar" component={() => <CalendarRoute wanted={this.state.wanted} calendar={this.state.calendar}/>}/>
-              <Route path="/history" component={() => <HistoryRoute/>}/>
-              <Route path="/config" component={() => <ConfigRoute/>}/>
-              <Route path="/series" component={() => <SeriesRoute store={this.props.store} series={this.state.series}/>}/>
+              <Route exact={true} path="/" render={() => <WelcomeRoute/>}/>
+              <Route path="/calendar" render={() => <CalendarRoute wanted={this.state.wanted} calendar={this.state.calendar}/>}/>
+              <Route path="/history" render={() => <HistoryRoute/>}/>
+              <Route path="/config" render={() => <ConfigRoute/>}/>
+              <Route path="/series" render={() => <SeriesRoute store={this.props.store} series={this.state.series}/>}/>
             </main>
           </div>
         </Router>
