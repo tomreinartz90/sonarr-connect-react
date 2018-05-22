@@ -1,15 +1,11 @@
 import * as React from "react";
 import { ShowComponent } from "../show/show.component";
 import { SeriesDetailsComponent } from "../series-details/series-details.component";
-import { DataManager } from "../../shared/data.manager.service";
-import { Subscription } from "rxjs/Subscription";
 import { SonarrSeriesState } from "../../reducers/series.reducer";
 import { Store } from "redux";
 import { initList, searchShow } from "../../reducers/series.actions";
 
 export class SeriesComponent extends React.Component<{ store?: Store, series?: SonarrSeriesState, }, { showList: boolean, searchQuery: string }> {
-  subscriptions: Array<Subscription> = [];
-  search: DataManager<string>        = new DataManager<string>( 'SeriesSearch' );
 
   constructor( a: any, b: any ) {
     super( a, b );
